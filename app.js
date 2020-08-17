@@ -3,6 +3,7 @@ const admin = require("./routes/admin"); //admin 호출
 const contacts = require("./routes/contacts");
 const nunjucks = require("nunjucks"); //nunjucks 호출
 const logger = require("morgan"); //morgan 호출
+const bodyParser = require("body-parser");
 
 const app = express();
 const port = 3000;
@@ -15,11 +16,14 @@ nunjucks.configure("template", {
 
 //미들웨어 셋팅
 app.use(logger("dev"));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
   res.send("express start");
 });
-//
+
+//미들웨어
 function vipMiddleware(req, res, next) {
   console.log("최우선 미들웨어");
   next();
