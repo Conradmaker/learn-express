@@ -2,6 +2,7 @@ const express = require("express");
 const admin = require("./routes/admin"); //admin 호출
 const contacts = require("./routes/contacts");
 const nunjucks = require("nunjucks"); //nunjucks 호출
+const logger = require("morgan"); //morgan 호출
 
 const app = express();
 const port = 3000;
@@ -12,11 +13,19 @@ nunjucks.configure("template", {
   express: app, //위에서 지정한 const app = express(); 선택
 });
 
+//미들웨어 셋팅
+app.use(logger("dev"));
+
 app.get("/", (req, res) => {
   res.send("express start");
 });
+//
+function vipMiddleware(req, res, next) {
+  console.log("최우선 미들웨어");
+  next();
+}
 
-app.use("/admin", admin);
+app.use("/admin", vipMiddleware, admin);
 //  /admin url은 admin파일을 참고해라
 app.use("/contacts", contacts);
 //  /contacts url은 contacts파일을 참고해라
