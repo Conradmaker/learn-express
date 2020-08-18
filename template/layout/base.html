@@ -12,7 +12,12 @@
   </head>
   <body>
     <div class="container" style="padding-top: 100px;">
-      {% block content %}{% endblock %}
+      <!-- 만약 isLogin이 true면 -->
+      {%if isLogin %} 로그인되있음
+      <!-- 아니면 -->
+      {%else%} 로그인안되있음
+      <!-- if문 종료 -->
+      {%endif%} {% block content %}{% endblock %}
       <!-- 이부분에 컨텐츠 (다른 템플릿내용들)이 들어가게 된다 -->
     </div>
   </body>

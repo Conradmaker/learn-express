@@ -19,6 +19,16 @@ app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use("/uploads", express.static("uploads"));
+//express.static:정적폴더를 추적해주는것
+
+app.use((req, res, next) => {
+  app.locals.isLogin = false;
+  next();
+});
+// 이렇게 하면 위에서부터 타고 타고 아래 라우팅으로 넘어가기 때문에,
+//isLogin을 템플릿에서 언제든지 접근할 수 있습니다.
+
 app.get("/", (req, res) => {
   res.send("express start");
 });
@@ -34,6 +44,13 @@ app.use("/admin", vipMiddleware, admin);
 app.use("/contacts", contacts);
 //  /contacts url은 contacts파일을 참고해라
 
+app.use((req, res, next) => {
+  res.status(400).render("common/404.html");
+});
+//응답상태가 400번대면 404.html을 렌더링해라
+app.use((req, res, _) => {
+  res.status(500).render("common/500.html");
+});
 app.listen(port, () => {
   console.log("Express listening on port", port);
 });
