@@ -24,6 +24,7 @@ app.use("/uploads", express.static("uploads"));
 
 app.use((req, res, next) => {
   app.locals.isLogin = false;
+  app.locals.req_path = req.path; //express에서 현재 url을 보내주는 변수
   next();
 });
 // 이렇게 하면 위에서부터 타고 타고 아래 라우팅으로 넘어가기 때문에,
